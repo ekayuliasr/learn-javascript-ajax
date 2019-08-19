@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> AJAX </title>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Include Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+	<h1>Form Ajax</h1>
+	<form id="form" method="post" action="proses.php">
+		<p>
+            <label>Nama</label>
+            <input type="text" id="nama" placeholder="Nama">
+        </p>
+        <p>
+            <label>Tanggal Lahir</label>
+            <input type="date" id="tanggal_lahir" placeholder="Tanggal Lahir">
+        </p>
+        <p>
+            <label>Tempat Lahir</label>
+            <input type="text" id="tempat_lahir" placeholder="Tempat Lahir">
+        </p>
+        <p>
+            <label>Alamat</label><br>
+            <textarea id="alamat" placeholder="Alamat" cols="50" rows="5"></textarea>
+        </p>
+        <input type="submit" value="Submit" />
+
+	</form>
+	<div id="hasil" style="display:none;"></div>
+
+
+  	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+	$(document).ready(function() {
+
+		$().ajaxStart(function() {
+			$('#hasil').hide();
+		}).ajaxStop(function() {
+			$('#hasil').fadeIn('slow');
+		});
+
+		$('#form').submit(function() {
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				success: function(data) {
+					$('#hasil').html(data);
+				}
+			})
+			return false;
+		});
+	})
+	</script>
+</body>
+</html>

@@ -11,52 +11,75 @@
 
 </head>
 <body>
-	<h1>Form Ajax</h1>
-	<form id="form" method="post" action="proses.php">
-		<p>
-            <label>Nama</label>
-            <input type="text" id="nama" placeholder="Nama">
-        </p>
-        <p>
-            <label>Tanggal Lahir</label>
-            <input type="date" id="tanggal_lahir" placeholder="Tanggal Lahir">
-        </p>
-        <p>
-            <label>Tempat Lahir</label>
-            <input type="text" id="tempat_lahir" placeholder="Tempat Lahir">
-        </p>
-        <p>
-            <label>Alamat</label><br>
-            <textarea id="alamat" placeholder="Alamat" cols="50" rows="5"></textarea>
-        </p>
-        <input type="submit" value="Submit" />
+	<div class="container">
+		<h1>Form Ajax</h1>
+		<form method="POST" onsubmit="return sendData()">
+			<div class="row mb-3">
+				<div class="col-12 col-lg-2">
+					<label>Nama</label>
+				</div>
+				<div class="col-12 col-lg-5">
+					<input type="text" class="form-control" id="nama" placeholder="Nama">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-12 col-lg-2">
+					 <label>Tempat Lahir</label>
+				</div>
+				<div class="col-12 col-lg-5">
+					<input type="text" class="form-control" id="tempat_lahir" placeholder="Tempat Lahir">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-12 col-lg-2">
+					 <label>Tanggal Lahir</label>
+				</div>
+				<div class="col-12 col-lg-5">
+					<input type="date" class="form-control" id="tanggal_lahir" placeholder="Tanggal Lahir">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-12 col-lg-2">
+					 <label>Alamat</label>
+				</div>
+				<div class="col-12 col-lg-5">
+					<textarea id="alamat" class="form-control" placeholder="Alamat" rows="3"></textarea>
+				</div>
+			</div>
+	        <div class="row">
+				<div class="col-12 col-lg-2"></div>
+				<div class="col-4 col-lg-2">
+					<input type="submit" class="form-control" value="Submit" />
+				</div>
+			</div>
+		</form>
+		<div id="hasil" style="display:none;"></div>
+		</div>
+	
 
-	</form>
-	<div id="hasil" style="display:none;"></div>
-
-
-  	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-	$(document).ready(function() {
+		function sendData() {
+            var request = new XMLHttpRequest();
+            var url = "https://jsonplaceholder.typicode.com/posts";
 
-		$().ajaxStart(function() {
-			$('#hasil').hide();
-		}).ajaxStop(function() {
-			$('#hasil').fadeIn('slow');
-		});
+            var data = JSON.stringify({
+                Nama: document.getElementById("nama").value,
+                TempatLahir: document.getElementById("tempat_lahir").value,
+                TanggalLahir: document.getElementById("tanggal_lahir").value,
+                Alamat: document.getElementById("alamat").value,
+                userId: 111
+            });
 
-		$('#form').submit(function() {
-			$.ajax({
-				type: 'POST',
-				url: $(this).attr('action'),
-				data: $(this).serialize(),
-				success: function(data) {
-					$('#hasil').html(data);
-				}
-			})
-			return false;
-		});
-	})
+            request.open("POST", url, true);
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {               
+                console.log (this.responseText);
+            };
+
+            request.send(data);
+            return false;
+        }
 	</script>
 </body>
 </html>
